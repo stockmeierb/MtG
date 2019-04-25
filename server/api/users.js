@@ -1,3 +1,4 @@
+//not being used currently
 const router = require('express').Router()
 const {User} = require('../db/models')
 module.exports = router

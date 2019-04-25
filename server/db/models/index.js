@@ -1,4 +1,5 @@
 const User = require('./user')
+//not being used currently
 
 /**
  * If we had any associations to make, this would be a great place to put them!

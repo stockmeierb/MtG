@@ -1,3 +1,4 @@
+//not being used currently
 const Sequelize = require('sequelize')
 const pkg = require('../../package.json')
 

@@ -1,8 +1,6 @@
-//not being used currently
 const router = require('express').Router()
 module.exports = router
 
-router.use('/users', require('./users'))
 router.use('/cards')
 
 router.use((req, res, next) => {

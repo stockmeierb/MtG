@@ -51,6 +51,7 @@ const createApp = () => {
   // compression middleware
   app.use(compression())
 
+  //If I want to let users save a list of cards to reference
   // session middleware with passport
   app.use(
     session({
@@ -60,12 +61,14 @@ const createApp = () => {
       saveUninitialized: false
     })
   )
+
   app.use(passport.initialize())
   app.use(passport.session())
 
   // auth and api routes
-  app.use('/auth', require('./auth'))
-  app.use('/api', require('./api'))
+  // app.use('/auth', require('./auth'))
+  // app.use('/api', require('./api'))
+  app.use('https://api.magicthegathering.io/v1/cards', require('./mtg'))
 
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')))

@@ -1,5 +1,5 @@
 /* global describe beforeEach it */
-
+//not being used currently
 const {expect} = require('chai')
 const request = require('supertest')
 const db = require('../db')
