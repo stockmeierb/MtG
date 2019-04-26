@@ -68,7 +68,7 @@ const createApp = () => {
   // auth and api routes
   // app.use('/auth', require('./auth'))
   // app.use('/api', require('./api'))
-  app.use('https://api.magicthegathering.io/v1/cards', require('./mtg'))
+  app.use('https://api.scryfall.com/cards/search', require('./mtg'))
 
   // static file-serving middleware
   app.use(express.static(path.join(__dirname, '..', 'public')))

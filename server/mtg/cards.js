@@ -1,53 +1,61 @@
-const mtg = require('mtgsdk')
-
+const axios = require('axios')
 const router = require('express').Router()
-const {User} = require('../db/models')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
+router.get('/:q', async (req, res, next) => {
   try {
-    const cards = await mtg.card.all()
-    res.json(cards)
+    let where = buildWhere(req.params.q)
+    const {data} = await axios.get('/', where)
+    cards = destructure(juson)
+    res.send(cards)
   } catch (err) {
     next(err)
   }
 })
 
 /*
-// Get all cards
-mtg.card.all()
-.on('data', function (card) {
-  console.log(card.name)
-});
+'https://api.scryfall.com/cards/search?q='
 
-// Filter Cards
-mtg.card.all({ supertypes: 'legendary', types: 'creature', colors: 'red,white' })
-.on('data', function (card) {
-    console.log(card.name)
-});
+// Make a request for a user with a given ID
+axios.get('/user?ID=12345')
+*/
 
-// Get cards on a specific page / pageSize
-mtg.card.where({ page: 50, pageSize: 50})
-.then(cards => {
-    console.log(cards[0].name)
-})
+//helper function - takes req.body, returns axios params
+// axios.get('/user', {
+//   params: {
+//     ID: 12345
+//   }
+// })
+function buildParams(query) {
+  return (ret = {params: {unique: 'art', include_extras: true, q: query}})
+}
 
-//Find by id
-mtg.card.find(386616)
-.then(result => {
-    console.log(result.card.name)
-})
+function destructure(json) {
+  let newCards = []
+  let newCard = {}
+  json.data.forEach(card => {
+    if (card.hasOwnProperty('flavor_text')) {
+      newCard.flavor_text = card.flavor_text
+    }
+    newCard.art_crop = card.image_uris.art_crop
 
-// partial name match
-mtg.card.where({name: '"Archangel Avacyn"'})
-.then(results => {
-    console.log(results)
-})
+    newCards.push(newCard)
+  })
+  return newCards
+}
 
-// exact name match
-mtg.card.where({name: '"Archangel Avacyn"'})
-.then(results => {
-    console.log(results)
-})
+/*
+'https://api.scryfall.com/cards/search?q='
+
+// Make a request for a user with a given ID
+axios.get('/user?ID=12345')
+
+// Optionally the request above could also be done as
+axios.get('/user', {
+    params: {
+      ID: 12345
+    }
+  })
+
 
 */
